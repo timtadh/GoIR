@@ -6,8 +6,9 @@ const (
     Label Kind = iota // instruction label
 
     // Assignments (largely the same with the exception of ParAssign)
+    ValAssign   // eg. a = b
+    UnAssign   // eg. a = - b
     BinAssign  // eg. a = b + c
-    UnAssign   // eg. a = b
     CondAssign // eg. a = b if c
     CastAssign // eg. a = type(b)
     InAssign   // eg. *a = b
