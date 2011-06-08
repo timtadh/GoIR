@@ -15,18 +15,18 @@ type MIRInst interface {
 }
 
 type Assign interface {
+    MIRInst
     Target() MIRVar
 }
 
 type ValueAssign interface {
     Assign
-    Source() MIROperand
+    X() MIROperand
 }
 
 type UnaryAssign interface {
-    Assign
+    ValueAssign
     Op() MIROperator
-    X() MIROperand
 }
 
 type BinaryAssign interface {
@@ -46,4 +46,36 @@ type CastAssign interface {
 
 type IndirectAssign interface {
     ValueAssign
+}
+
+type Branch interface {
+    MIRInst
+    Label() MIRLabel
+}
+
+type Goto interface {
+    Branch
+}
+
+type Return interface {
+    Branch
+}
+
+type Call interface {
+    Branch
+}
+
+type ValueIf interface {
+    Branch
+    X() MIROperand
+}
+
+type UnaryIf interface {
+    ValueIf
+    Op() MIROperator
+}
+
+type BinaryIf interface {
+    UnaryIf
+    Y() MIROperand
 }
