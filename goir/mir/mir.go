@@ -14,6 +14,11 @@ type MIRInst interface {
     Kind() kinds.Kind
 }
 
+type Label interface {
+    MIRInst
+    Label() string
+}
+
 type Assign interface {
     MIRInst
     Target() MIRVar
