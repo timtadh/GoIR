@@ -64,48 +64,84 @@ func NewIndirectAssign(target MIRVar, x MIROperand) IndirectAssign {
     })
 }
 
-type Branch interface {
-    MIRInst
-    Label() MIRLabel
+func NewGoto(label MIRLabel) Goto {
+    return Goto(&inst{
+        kind: kinds.Goto,
+        z:    MIROperand(label),
+    })
 }
 
-type Goto interface {
-    Branch
+func NewReturn(label MIRLabel) Return {
+    return Return(&inst{
+        kind: kinds.Return,
+        z:    MIROperand(label),
+    })
 }
 
-type Return interface {
-    Branch
+func NewCall(label MIRLabel) Call {
+    return Call(&inst{
+        kind: kinds.Call,
+        z:    MIROperand(label),
+    })
 }
 
-type Call interface {
-    Branch
+func NewValueIf(label MIRLabel, x MIROperand) ValueIf {
+    return ValueIf(&inst{
+        kind: kinds.ValueIf,
+        x:    x,
+        z:    MIROperand(label),
+    })
 }
 
-type ValueIf interface {
-    Branch
-    X() MIROperand
+func NewUnaryIf(label MIRLabel, op MIROperator, x MIROperand) UnaryIf {
+    return UnaryIf(&inst{
+        kind: kinds.UnaryIf,
+        op:   op,
+        x:    x,
+        z:    MIROperand(label),
+    })
 }
 
-type UnaryIf interface {
-    ValueIf
-    Op() MIROperator
+func NewBinaryIf(label MIRLabel, op MIROperator, x, y MIROperand) BinaryIf {
+    return BinaryIf(&inst{
+        kind: kinds.BinaryIf,
+        op:   op,
+        x:    x,
+        y:    y,
+        z:    MIROperand(label),
+    })
 }
 
-type BinaryIf interface {
-    UnaryIf
-    Y() MIROperand
+func newParameter(kind kinds.Kind, param MIRVar, pos uint, Type MIRType) Parameter {
+    return Parameter(&inst{
+        kind: kind,
+        x:    MIROperand(pos),
+        y:    MIROperand(Type),
+        z:    MIROperand(param),
+    })
 }
 
-type Parameter interface {
-    MIRInst
-    Param() MIRVar
-    Pos() uint
-    Type() MIRType
+func NewInParam(param MIRVar, pos uint, Type MIRType) Parameter {
+    return newParamter(kinds.InParam, param, pos, Type)
 }
 
-type Recieve interface {
-    MIRInst
-    Target() MIRVar
-    Pos() uint
-    Type() MIRType
+func NewOutParam(param MIRVar, pos uint, Type MIRType) Parameter {
+    return newParamter(kinds.OutParam, param, pos, Type)
+}
+
+func newRecieve(kind kinds.Kind, target MIRVar, pos uint, Type MIRType) Recieve {
+    return Recieve(&inst{
+        kind: kind,
+        x:    MIROperand(pos),
+        y:    MIROperand(Type),
+        z:    MIROperand(target),
+    })
+}
+
+func NewInRecieve(target MIRVar, pos uint, Type MIRType) Recieve {
+    return newRecieve(kinds.InRecieve, param, pos, Type)
+}
+
+func NewOutRecieve(target MIRVar, pos uint, Type MIRType) Recieve {
+    return newRecieve(kinds.OutRecieve, param, pos, Type)
 }
