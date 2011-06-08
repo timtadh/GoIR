@@ -28,10 +28,3 @@ const (
     ReceiveIn  // eg. receive a 1 type               | call f <recievein ... outparam ... 2>
     ReceiveOut // eg. receive a 1 type               | recieveout c, 1, val ; receiveout d, 2
 )
-
-type Type uint16
-// Need to define the types here
-
-type UnaryOp uint16
-type BinaryOp uint16
-type RelOp uint16
