@@ -17,12 +17,13 @@ type MIRType interface{}
 type MIRLabel interface{}
 
 type MIRInst interface {
+    String() string
     Kind() kinds.Kind
 }
 
 type Label interface {
     MIRInst
-    Label() string
+    Label() MIRLabel
 }
 
 type Assign interface {
@@ -98,7 +99,7 @@ type Parameter interface {
     Type() MIRType
 }
 
-type Recieve interface {
+type Receive interface {
     MIRInst
     Target() MIRVar
     Pos() uint

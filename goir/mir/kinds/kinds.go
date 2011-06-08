@@ -6,18 +6,18 @@ const (
     Label Kind = iota // instruction label
 
     // Assignments (largely the same with the exception of ParAssign)
-    ValAssign  // eg. a = b
-    UnAssign   // eg. a = - b
-    BinAssign  // eg. a = b + c
-    CondAssign // eg. a = b if c
+    ValueAssign  // eg. a = b
+    UnaryAssign   // eg. a = - b
+    BinaryAssign  // eg. a = b + c
+    ConditionalAssign // eg. a = b if c
     CastAssign // eg. a = type(b)
-    InAssign   // eg. *a = b
+    IndirectAssign   // eg. *a = b
 
     // Branch Statements
     Goto   // eg. goto label
-    BinIf  // eg. if a op b goto label
-    UnIf   // eg. if op a goto label
-    ValIf  // eg. if op goto label
+    BinaryIf  // eg. if a op b goto label
+    UnaryIf   // eg. if op a goto label
+    ValueIf  // eg. if op goto label
     Call   // eg. call name
     Return // eg. return
 

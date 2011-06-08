@@ -1,7 +1,12 @@
 package mir
 
 import "os"
+import "fmt"
 import "goir/mir/kinds"
+
+func (self *inst) String() string {
+    return fmt.Sprintf("<MIRInst %v, %v, %v, %v>", self.o, self.x, self.y, self.z)
+}
 
 func (self *inst) Kind() kinds.Kind {
     return self.kind

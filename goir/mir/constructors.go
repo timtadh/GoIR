@@ -1,6 +1,6 @@
 package mir
 
-import "kinds"
+import "goir/mir/kinds"
 
 func NewLabel(label string) Label {
     return Label(&inst{kind: kinds.Label, z: MIROperand(label)})
@@ -96,7 +96,7 @@ func NewValueIf(label MIRLabel, x MIROperand) ValueIf {
 func NewUnaryIf(label MIRLabel, op MIROperator, x MIROperand) UnaryIf {
     return UnaryIf(&inst{
         kind: kinds.UnaryIf,
-        op:   op,
+        o:   op,
         x:    x,
         z:    MIROperand(label),
     })
@@ -105,7 +105,7 @@ func NewUnaryIf(label MIRLabel, op MIROperator, x MIROperand) UnaryIf {
 func NewBinaryIf(label MIRLabel, op MIROperator, x, y MIROperand) BinaryIf {
     return BinaryIf(&inst{
         kind: kinds.BinaryIf,
-        op:   op,
+        o:   op,
         x:    x,
         y:    y,
         z:    MIROperand(label),
@@ -122,15 +122,15 @@ func newParameter(kind kinds.Kind, param MIRVar, pos uint, Type MIRType) Paramet
 }
 
 func NewInParam(param MIRVar, pos uint, Type MIRType) Parameter {
-    return newParamter(kinds.InParam, param, pos, Type)
+    return newParameter(kinds.InParam, param, pos, Type)
 }
 
 func NewOutParam(param MIRVar, pos uint, Type MIRType) Parameter {
-    return newParamter(kinds.OutParam, param, pos, Type)
+    return newParameter(kinds.OutParam, param, pos, Type)
 }
 
-func newRecieve(kind kinds.Kind, target MIRVar, pos uint, Type MIRType) Recieve {
-    return Recieve(&inst{
+func newReceive(kind kinds.Kind, target MIRVar, pos uint, Type MIRType) Receive {
+    return Receive(&inst{
         kind: kind,
         x:    MIROperand(pos),
         y:    MIROperand(Type),
@@ -138,10 +138,10 @@ func newRecieve(kind kinds.Kind, target MIRVar, pos uint, Type MIRType) Recieve 
     })
 }
 
-func NewInRecieve(target MIRVar, pos uint, Type MIRType) Recieve {
-    return newRecieve(kinds.InRecieve, param, pos, Type)
+func NewReceiveIn(target MIRVar, pos uint, Type MIRType) Receive {
+    return newReceive(kinds.ReceiveIn, target, pos, Type)
 }
 
-func NewOutRecieve(target MIRVar, pos uint, Type MIRType) Recieve {
-    return newRecieve(kinds.OutRecieve, param, pos, Type)
+func NewReceiveOut(target MIRVar, pos uint, Type MIRType) Receive {
+    return newReceive(kinds.ReceiveOut, target, pos, Type)
 }

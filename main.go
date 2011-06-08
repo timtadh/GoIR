@@ -4,6 +4,7 @@ import "fmt"
 import "os"
 import "flag"
 import "goast"
+import "goir/mir"
 
 var exitcodes = map[string]int{
     "ok":      0,
@@ -46,4 +47,6 @@ func main() {
     }
     fmt.Println(ast.Dotty())
     error("GoAST complete")
+
+    error(mir.NewValueAssign("a", "b").String())
 }
