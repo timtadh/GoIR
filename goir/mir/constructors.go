@@ -1,23 +1,9 @@
 package mir
 
-import "goir/mir/kinds"
+import kinds
 
-type inst struct {
-    kind kinds.Kind
-    o    MIROperator
-    x    MIROperand
-    y    MIROperand
-    z    MIROperand
-}
-
-type MIROperand interface{}
-type MIROperator interface{}
-type MIRVar interface{}
-type MIRType interface{}
-type MIRLabel interface{}
-
-type MIRInst interface {
-    Kind() kinds.Kind
+func NewLabel(label string) Label {
+    return Label(&inst{kind:kinds.Label, x:MIROperand(label)})
 }
 
 type Label interface {
@@ -104,3 +90,4 @@ type Recieve interface {
     Pos() uint
     Type() MIRType
 }
+
