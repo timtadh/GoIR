@@ -79,3 +79,17 @@ type BinaryIf interface {
     UnaryIf
     Y() MIROperand
 }
+
+type Parameter interface {
+    MIRInst
+    Param() MIRVar
+    Pos() uint
+    Type() MIRType
+}
+
+type Recieve interface {
+    MIRInst
+    Target() MIRVar
+    Pos() uint
+    Type() MIRType
+}
