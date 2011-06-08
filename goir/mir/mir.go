@@ -46,7 +46,7 @@ type BinaryAssign interface {
 }
 
 type ConditionalAssign interface {
-    ValueAssign
+    UnaryAssign
     Cond() MIROperand
 }
 

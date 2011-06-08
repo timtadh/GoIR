@@ -1,48 +1,67 @@
 package mir
 
-import kinds
+import "kinds"
 
 func NewLabel(label string) Label {
-    return Label(&inst{kind:kinds.Label, x:MIROperand(label)})
+    return Label(&inst{kind: kinds.Label, z: MIROperand(label)})
 }
 
-type Label interface {
-    MIRInst
-    Label() string
+
+func NewValueAssign(target MIRVar, x MIROperand) ValueAssign {
+    return ValueAssign(&inst{
+        kind: kinds.ValueAssign,
+        x:    x,
+        z:    MIROperand(target),
+    })
 }
 
-type Assign interface {
-    MIRInst
-    Target() MIRVar
+func NewUnaryAssign(op MIROperator, target MIRVar, x MIROperand) UnaryAssign {
+    return UnaryAssign(&inst{
+        kind: kinds.UnaryAssign,
+        o:    op,
+        x:    x,
+        z:    MIROperand(target),
+    })
 }
 
-type ValueAssign interface {
-    Assign
-    X() MIROperand
+func NewBinaryAssign(op MIROperator, target MIRVar, x, y MIROperand) BinaryAssign {
+    return BinaryAssign(&inst{
+        kind: kinds.BinaryAssign,
+        o:    op,
+        x:    x,
+        y:    y,
+        z:    MIROperand(target),
+    })
 }
 
-type UnaryAssign interface {
-    ValueAssign
-    Op() MIROperator
+func NewConditionalAssign(cond_op MIROperator,
+target MIRVar,
+x, cond MIROperand) ConditionalAssign {
+    return ConditionalAssign(&inst{
+        kind: kinds.ConditionalAssign,
+        o:    cond_op,
+        x:    x,
+        y:    cond,
+        z:    MIROperand(target),
+    })
 }
 
-type BinaryAssign interface {
-    UnaryAssign
-    Y() MIROperand
+func NewCastAssign(cond_op MIROperator, target MIRVar, x MIROperand, Type MIRType) CastAssign {
+    return CastAssign(&inst{
+        kind: kinds.CastAssign,
+        o:    cond_op,
+        x:    x,
+        y:    MIROperand(Type),
+        z:    MIROperand(target),
+    })
 }
 
-type ConditionalAssign interface {
-    ValueAssign
-    Cond() MIROperand
-}
-
-type CastAssign interface {
-    ValueAssign
-    Type() MIRType
-}
-
-type IndirectAssign interface {
-    ValueAssign
+func NewIndirectAssign(target MIRVar, x MIROperand) IndirectAssign {
+    return IndirectAssign(&inst{
+        kind: kinds.IndirectAssign,
+        x:    x,
+        z:    MIROperand(target),
+    })
 }
 
 type Branch interface {
@@ -90,4 +109,3 @@ type Recieve interface {
     Pos() uint
     Type() MIRType
 }
-
