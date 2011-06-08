@@ -6,13 +6,12 @@ const (
     Label Kind = iota // instruction label
 
     // Assignments (largely the same with the exception of ParAssign)
-    ValAssign   // eg. a = b
+    ValAssign  // eg. a = b
     UnAssign   // eg. a = - b
     BinAssign  // eg. a = b + c
     CondAssign // eg. a = b if c
     CastAssign // eg. a = type(b)
     InAssign   // eg. *a = b
-    ParAssign  // eg. a, b = d, c # eg. atomic swp ie. t = a; a = b; b = t
 
     // Branch Statements
     Goto   // eg. goto label

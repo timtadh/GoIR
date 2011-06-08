@@ -2,88 +2,48 @@ package mir
 
 import "goir/mir/kinds"
 
+type inst struct {
+    kind kinds.Kind
+    o    MIROperator
+    x    MIROperand
+    y    MIROperand
+    z    MIROperand
+}
+
 type MIRInst interface {
     Kind() kinds.Kind
 }
 
-type MIRVar interface {
-    Name() string
-    Size() uint32    // size in bytes
-    BitSize() uint32 // size in bits
+type Assign interface {
+    Target() MIRVar
 }
 
-type MIRConst interface {
-    Value() string
+type ValueAssign interface {
+    Assign
+    Source() MIROperand
 }
 
-type MIRType interface {
-    Name() string
+type UnaryAssign interface {
+    Assign
+    Op() MIROperator
+    X() MIROperand
 }
 
-type MIROperand interface { // eg. Var, Const, or TypeName
-    Name() string
+type BinaryAssign interface {
+    UnaryAssign
+    Y() MIROperand
 }
 
-type Label struct {
-    kind kinds.Kind
-    name string
+type ConditionalAssign interface {
+    ValueAssign
+    Cond() MIROperand
 }
 
-type Assignment interface {
-    MIRInst
-    Targ() MIRVar
-    Op() kinds.UnaryOp
-    X() MIRVar
+type CastAssign interface {
+    ValueAssign
+    Type() MIRType
 }
 
-type ValAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    x    MIROperand
+type IndirectAssign interface {
+    ValueAssign
 }
-
-type UnaryAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    op   kinds.UnaryOp
-    x    MIROperand
-}
-
-type BinaryAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    op   kinds.BinaryOp
-    x    MIROperand
-    y    MIROperand
-}
-
-type CondAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    cond MIRVar
-    x    MIROperand
-}
-
-type CastAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    typ  MIRType
-    x    MIROperand
-}
-
-type IndirAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    x    MIROperand
-}
-
-type ParAssign struct {
-    kind kinds.Kind
-    t    MIRVar
-    u    MIRVar
-    x    MIROperand
-    y    MIROperand
-}
-
-
-// type
