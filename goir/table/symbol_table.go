@@ -1,5 +1,8 @@
 package table
 
+import "fmt"
+import "strings"
+
 type SymbolTable struct {
     table map[string]interface{}
     parent *SymbolTable
@@ -47,5 +50,25 @@ func (self *SymbolTable) Del(key string) {
 }
 
 func (self *SymbolTable) String() string {
-    return "need to actually implement this method"
+    keys := self.Keys()
+    items := make([]string, 0, len(keys))
+    for _, key := range keys {
+        if item, ok := self.Get(key); ok {
+            items = append(items, fmt.Sprintf("%v:%v", key, item))
+        }
+    }
+    return "{" + strings.Join(items, ", ") + "}"
+}
+
+func (self *SymbolTable) Keys() []string {
+    var keys []string
+    if self.parent != nil {
+        keys = self.parent.Keys()
+    } else {
+        keys = make([]string, 0, len(self.table)+10)
+    }
+    for key, _ := range self.table {
+        keys = append(keys, key)
+    }
+    return keys
 }
