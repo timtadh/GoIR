@@ -5,6 +5,7 @@ import "os"
 import "flag"
 import "goast"
 import "goir/mir"
+import "goir/table"
 
 var exitcodes = map[string]int{
     "ok":      0,
@@ -49,4 +50,5 @@ func main() {
     error("GoAST complete")
 
     error(mir.NewValueAssign("a", "b").String())
+    error(table.NewSymbolTable().String())
 }
