@@ -48,7 +48,7 @@ func (self *generator) productions() map[string]production {
 
         "Ident": func(node *tree.Node) interface{} {
             fmt.Println("ident")
-            v := &Var{name: node.Children[0].Label}
+            v := &Ident{name: node.Children[0].Label}
             if len(node.Children) == 2 {
                 v.public = true
             }
