@@ -4,7 +4,7 @@ import "fmt"
 import "strings"
 
 type SymbolTable struct {
-    table map[string]interface{}
+    table  map[string]interface{}
     parent *SymbolTable
 }
 
@@ -49,17 +49,19 @@ func (self *SymbolTable) Del(key string) {
     self.table[key] = nil, false
 }
 
+// Makes a string out of it.
 func (self *SymbolTable) String() string {
     keys := self.Keys()
     items := make([]string, 0, len(keys))
     for _, key := range keys {
         if item, ok := self.Get(key); ok {
-            items = append(items, fmt.Sprintf("%v:%v", key, item))
+            items = append(items, fmt.Sprintf("\"%v\":%v", key, item))
         }
     }
     return "{" + strings.Join(items, ", ") + "}"
 }
 
+// Returns all the keys in the symbol table findable by Get(key)
 func (self *SymbolTable) Keys() []string {
     var keys []string
     if self.parent != nil {

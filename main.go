@@ -4,8 +4,7 @@ import "fmt"
 import "os"
 import "flag"
 import "goast"
-import "goir/mir"
-import "goir/table"
+import "goir/gen"
 
 var exitcodes = map[string]int{
     "ok":      0,
@@ -46,9 +45,6 @@ func main() {
         error(err.String())
         usage(exitcodes["usage"])
     }
-    fmt.Println(ast.Dotty())
-    error("GoAST complete")
 
-    error(mir.NewValueAssign("a", "b").String())
-    error(table.NewSymbolTable().String())
+    gen.Generate(ast)
 }

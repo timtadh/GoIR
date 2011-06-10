@@ -96,7 +96,7 @@ func NewValueIf(label MIRLabel, x MIROperand) ValueIf {
 func NewUnaryIf(label MIRLabel, op MIROperator, x MIROperand) UnaryIf {
     return UnaryIf(&inst{
         kind: kinds.UnaryIf,
-        o:   op,
+        o:    op,
         x:    x,
         z:    MIROperand(label),
     })
@@ -105,7 +105,7 @@ func NewUnaryIf(label MIRLabel, op MIROperator, x MIROperand) UnaryIf {
 func NewBinaryIf(label MIRLabel, op MIROperator, x, y MIROperand) BinaryIf {
     return BinaryIf(&inst{
         kind: kinds.BinaryIf,
-        o:   op,
+        o:    op,
         x:    x,
         y:    y,
         z:    MIROperand(label),

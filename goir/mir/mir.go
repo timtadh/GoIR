@@ -12,9 +12,14 @@ type inst struct {
 
 type MIROperand interface{}
 type MIROperator interface{}
-type MIRVar interface{}
 type MIRType interface{}
 type MIRLabel interface{}
+
+type MIRVar interface {
+    Name() string
+    String() string
+    Public() bool
+}
 
 type MIRInst interface {
     String() string
