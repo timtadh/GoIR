@@ -3,9 +3,10 @@ package gen
 import "os"
 import "fmt"
 import "strconv"
-import "strings"
+// import "strings"
 import "goir/table"
 import "goast/tree"
+import "goir/mir"
 
 type generator struct {
     table *table.SymbolTable
@@ -38,15 +39,15 @@ func (self *generator) productions() map[string]production {
         panic(os.NewError(fmt.Sprintf("Node '%s' does not have a handler.", node.Label)))
     }
 
-    trycall := func(node *tree.Node, except func(node *tree.Node)) interface{} {
-        defer func() {
-            if err := recover(); err != nil {
-                fmt.Println(err)
-                except(node)
-            }
-        }()
-        return call(node)
-    }
+//     trycall := func(node *tree.Node, except func(node *tree.Node)) interface{} {
+//         defer func() {
+//             if err := recover(); err != nil {
+//                 fmt.Println(err)
+//                 except(node)
+//             }
+//         }()
+//         return call(node)
+//     }
 
     productions = map[string]production{
         "default": func(node *tree.Node) interface{} {
@@ -84,82 +85,8 @@ func (self *generator) productions() map[string]production {
             if len(node.Children) == 2 {
                 v.public = true
             }
+            fmt.Println(v)
             return v
-        },
-
-
-        "Decls": func(node *tree.Node) interface{} {
-            fmt.Println("decls")
-            for _, c := range node.Children {
-//                 trycall(c,
-//                         func(c *tree.Node) {
-//                             fmt.Println("unprocessed ->", c.Label)
-//                         },
-//                 )
-                call(c)
-            }
-            return nil
-        },
-
-        "GenDecl": func(node *tree.Node) interface{} {
-            fmt.Println("gen_decl")
-            for _, c := range node.Children {
-                trycall(c,
-                        func(c *tree.Node) {
-                            fmt.Println("spec not yet supported ", c.Label)
-                        },
-                )
-            }
-            return nil
-        },
-
-
-        "FuncDecl": func(node *tree.Node) interface{} {
-            fmt.Println("func_decl")
-            var name *Ident
-            for _, c := range node.Children {
-                switch c.Label {
-                case "Name":
-                    name = call(c.Children[0]).(*Ident)
-                case "Recieve":
-                case "Type":
-                case "Body":
-                    call(c)
-                default:
-                    panic(os.NewError(fmt.Sprint("Unexpected Node ", c)))
-                }
-            }
-            if name != nil {
-                fmt.Println("name ", name)
-            }
-            return nil
-        },
-
-        "ImportSpec": func(node *tree.Node) interface{} {
-            fmt.Println("import_spec")
-            var path string
-            var name string
-            for _, c := range node.Children {
-                switch c.Label {
-                case "BasicLit":
-                    path = call(c).(string)
-                case "Ident":
-                    name = call(c).(string)
-                default:
-                    panic(os.NewError(fmt.Sprintf("Node '%s' does not have a handler.", node.Label)))
-                }
-            }
-            if name == "" {
-                split := strings.Split(path, "/", 0)
-                if len(split) > 0 {
-                    name = split[len(split)-1]
-                } else {
-                    name = path
-                }
-            }
-            fmt.Println("name :", name)
-            fmt.Println("path :", path)
-            return nil
         },
 
         "BasicLit": func(node *tree.Node) interface{} {
@@ -179,6 +106,15 @@ func (self *generator) productions() map[string]production {
             default:
                 panic(os.NewError(fmt.Sprintf("Basic Lit type '%s' is not supported.", type_)))
             }
+            return nil
+        },
+
+        "BinaryExpr": func(node *tree.Node) interface{} {
+            fmt.Println(node.Label)
+            op := node.Children[0].Label
+            x := call(node.Children[1]).(mir.MIROperand)
+            y := call(node.Children[2]).(mir.MIROperand)
+            fmt.Println(op, x, y)
             return nil
         },
     }
