@@ -39,6 +39,8 @@ func (self *generator) productions() map[string]production {
         panic(os.NewError(fmt.Sprintf("Node '%s' does not have a handler.", node.Label)))
     }
 
+    tmpvar := func() mir.MirVar
+
 //     trycall := func(node *tree.Node, except func(node *tree.Node)) interface{} {
 //         defer func() {
 //             if err := recover(); err != nil {
@@ -114,8 +116,8 @@ func (self *generator) productions() map[string]production {
             op := node.Children[0].Label
             x := call(node.Children[1]).(mir.MIROperand)
             y := call(node.Children[2]).(mir.MIROperand)
-            fmt.Println(op, x, y)
-            return nil
+            inst := mir.NewBinaryAssign(op, nil, x, y)
+            return inst
         },
     }
 
